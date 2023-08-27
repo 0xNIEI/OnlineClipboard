@@ -16,7 +16,7 @@ services:
     volumes:
       - stored_data:/app/db
     ports:
-      - 1003:80
+      - 1024:80
     restart: always
 
 volumes:
