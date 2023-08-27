@@ -11992,4 +11992,7 @@ pre {
     width: 80vw;
     height: 30vh;
   }
+  .title {
+    font-size: 10vw;
+  }
 }

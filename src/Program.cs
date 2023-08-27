@@ -15,6 +15,11 @@ namespace OnlineClipboard
             builder.Services.AddControllersWithViews();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddRazorPages();
+            builder.Services.AddAntiforgery(options =>
+            {
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.Name = "__Secure-Antiforgery";
+            });
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("localDb")));
 
             var app = builder.Build();
@@ -59,7 +64,7 @@ namespace OnlineClipboard
             {
                 if (!context.Response.Headers.Any(x => x.Key == "Content-Security-Policy"))
                 {
-                    context.Response.Headers.Add("Content-Security-Policy", "default-src 'none'; font-src 'self'; img-src data: w3.org/svg/2000 'self'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none';");
+                    context.Response.Headers.Add("Content-Security-Policy", "default-src 'none'; font-src 'self'; img-src data: w3.org/svg/2000 'self'; object-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none';");
                     context.Response.Headers.Add("X-Xss-Protection", "1; mode=block");
                     context.Response.Headers.Add("X-Frame-Options", "DENY");
                     context.Response.Headers.Add("X-Content-Type-Options", "nosniff");

@@ -1,5 +1,4 @@
 ﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
-
 @{
     var data_bs_theme = "dark";
     var color_mode_icon = "<i class=\"fa-solid fa-cloud-moon\"></i>"; ;
@@ -9,9 +8,8 @@
         color_mode_icon = "<i class=\"fa-solid fa-sun\"></i>";
     }
 }
-
 <!DOCTYPE html>
-<html data-bs-theme="@data_bs_theme"  lang="en">
+<html data-bs-theme="@data_bs_theme" lang="en">
 <head>
     <meta charset="utf-16" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,7 +17,7 @@
     <meta name="keywords" content="NIEI, Online Clipboard, C2">
     <meta name="author" content="NIEI">
     <meta name="theme-color" content="#5600b8">
-    <meta name="image" content="https:/c2./niei.net/img/default-cover.png">
+    <meta name="image" content="https:/c2.niei.net/img/default-cover.png">
     <meta property="og:title" content="c2.NIEI.net" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://c2.niei.net/" />
@@ -66,17 +64,15 @@
 
     <footer class="text-muted fixed-bottom pb-2 px-1">
         <div class="text-right">
-            &nbsp;&copy; @DateTime.Now.Year - <a href="https://niei.net">NIEI</a><span id="disclaimer-text"> - //DISCLAIMER: This Site uses Cookies to store whether or not you are using Darkmode.</span>
+            &nbsp;&copy; @DateTime.Now.Year - <a href="https://niei.net">NIEI</a> - <a href="https://github.com/0xNIEI/OnlineClipboard">Source Code</a><span id="disclaimer-text"> - //DISCLAIMER: This Site uses Cookies to store whether or not you are using Darkmode.</span>
         </div>
     </footer>
     <environment include="Development">
         <script src="~/lib/bootstrap/js/bootstrap.bundle.js"></script>
-        <script src="~/lib/fortawesome/fontawesome-free/js/all.js"></script>
         <script src="~/js/site.js" defer></script>
     </environment>
     <environment exclude="Development">
         <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="~/lib/fortawesome/fontawesome-free/js/all.min.js"></script>
         <script src="~/js/site.min.js" defer></script>
     </environment>
     @await RenderSectionAsync("Scripts", required: false)
