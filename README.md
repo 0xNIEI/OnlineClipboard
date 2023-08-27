@@ -13,7 +13,12 @@ services:
     image: niei/onlineclipboard:latest
     container_name: onlineclipboard
     network_mode: bridge
+    volumes:
+      - stored_data:/app/db
     ports:
-      - 1024:80
+      - 1003:80
     restart: always
+
+volumes:
+  stored_data:
 ```
