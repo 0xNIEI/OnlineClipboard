@@ -31,7 +31,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="content" class="control-label"></label>
-                <textarea asp-for="content" class="form-control content-text"></textarea>
+                <textarea asp-for="content" class="form-control content-text" maxlength="69000"></textarea>
             </div>
             <div class="form-group text-danger">
                 @Html.DisplayFor(model => model.validationError)
