@@ -28,30 +28,35 @@ namespace OnlineClipboard.Controllers
         {
             if (theme == "light")
             {
-                if (HttpContext.Request.Cookies.Any(x => x.Key == "Darkmode" && x.Value == "false"))
+                if (HttpContext.Request.Cookies.Any(x => x.Key == "__Secure-DarkMode" && x.Value == "false"))
                 {
                     return Ok();
                 }
-                HttpContext.Response.Cookies.Delete("DarkMode");
+                HttpContext.Response.Cookies.Delete("__Secure-DarkMode");
                 CookieOptions options = new CookieOptions();
                 options.Expires = DateTime.Now.AddMonths(12);
                 options.IsEssential = true;
                 options.Path = "/";
-                HttpContext.Response.Cookies.Append("DarkMode", "false", options);
+                HttpContext.Response.Cookies.Append("__Secure-DarkMode", "false", options);
             }
             else
             {
-                if (HttpContext.Request.Cookies.Any(x => x.Key == "Darkmode" && x.Value == "true"))
+                if (HttpContext.Request.Cookies.Any(x => x.Key == "__Secure-DarkMode" && x.Value == "true"))
                 {
                     return Ok();
                 }
                 else
                 {
-                    CookieOptions options = new CookieOptions();
-                    options.Expires = DateTime.Now.AddMonths(12);
-                    options.IsEssential = true;
-                    options.Path = "/";
-                    HttpContext.Response.Cookies.Append("DarkMode", "true", options);
+                    var options = new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddMonths(12),
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict,
+                        IsEssential = true,
+                        Path = "/",
+                        HttpOnly = true
+                    };
+                    HttpContext.Response.Cookies.Append("__Secure-DarkMode", "true", options);
                 }
 
             }

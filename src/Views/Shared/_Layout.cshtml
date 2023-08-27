@@ -2,7 +2,7 @@
 @{
     var data_bs_theme = "dark";
     var color_mode_icon = "<i class=\"fa-solid fa-cloud-moon\"></i>"; ;
-    if (HttpContextAccessor.HttpContext != null && HttpContextAccessor.HttpContext.Request.Cookies.Any(x => x.Key == "DarkMode" && x.Value == "false"))
+    if (HttpContextAccessor.HttpContext != null && HttpContextAccessor.HttpContext.Request.Cookies.Any(x => x.Key == "__Secure-DarkMode" && x.Value == "false"))
     {
         data_bs_theme = "light";
         color_mode_icon = "<i class=\"fa-solid fa-sun\"></i>";
