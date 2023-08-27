@@ -64,6 +64,11 @@ body {
   margin-bottom: 60px;
 }
 
+a {
+    text-decoration: none ;
+    color: unset !important;
+}
+
 .title {
     font-size: 60px;
     font-weight: bold;
