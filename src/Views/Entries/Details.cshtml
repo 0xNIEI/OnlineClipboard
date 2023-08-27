@@ -16,7 +16,7 @@
     <form asp-action="Delete" asp-route-id="@Model.id">
         <button type="submit" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
         <a asp-action="Create" class="btn btn-outline-primary"><i class="fa-solid fa-plus"></i></a>
-        <a class="btn btn-outline-primary" id="copy-button"><i class="fa-solid fa-clipboard"></i></a>
+        <button class="btn btn-outline-primary" id="copy-button" type="button"><i class="fa-solid fa-clipboard"></i></button>
     </form>
 </div>
 @section Scripts{

@@ -75,9 +75,9 @@ namespace OnlineClipboard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(EntryViewModel entryViewModel)
         {
-            if (string.IsNullOrWhiteSpace(entryViewModel.content))
+            if (string.IsNullOrWhiteSpace(entryViewModel.content) || entryViewModel.content.Length >= 69420)
             {
-                entryViewModel.validationError = "Content can't be empty bro";
+                entryViewModel.validationError = "Content is empty or too large";
                 return View(entryViewModel);
             }
 
