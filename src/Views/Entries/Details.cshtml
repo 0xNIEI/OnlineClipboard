@@ -1,0 +1,29 @@
+﻿@model OnlineClipboard.Models.EntryViewModel
+
+@{
+    ViewData["Title"] = Html.DisplayFor(model => model.id);
+}
+
+<h1 class="title">@Html.DisplayFor(model => model.id)@(Model.custom_id != null ? " (" + Model.custom_id + ")" : "")</h1>
+
+<div>
+<div class="pb-2 pt-2 border-secondary border-2">
+    <pre id="content-block">@Html.DisplayFor(model => model.content)</pre>
+</div>
+    
+</div>
+<div>
+    <form asp-action="Delete" asp-route-id="@Model.id">
+        <button type="submit" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
+        <a asp-action="Create" class="btn btn-outline-primary"><i class="fa-solid fa-plus"></i></a>
+        <a class="btn btn-outline-primary" id="copy-button"><i class="fa-solid fa-clipboard"></i></a>
+    </form>
+</div>
+@section Scripts{
+    <environment include="Development">
+        <script src="~/js/details.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/details.min.js"></script>
+    </environment>
+}

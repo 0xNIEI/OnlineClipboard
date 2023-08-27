@@ -1,0 +1,52 @@
+﻿@model OnlineClipboard.Models.EntryViewModel
+
+@{
+    ViewData["Title"] = "New";
+}
+
+<h1 class="title">New</h1>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group pb-2">
+                <label asp-for="custom_id" class="control-label"></label>
+                <input asp-for="custom_id" class="form-control custom-input" maxlength="16" />
+            </div>
+            <div class="form-group pb-2">
+                <input class="form-check-input" type="checkbox" asp-for="onlyViewableOnce">
+                <label class="form-check-label" asp-for="onlyViewableOnce">
+                </label>
+            </div>
+            <div class="form-group pb-2">
+                <label asp-for="expiresIn" class="control-label">Expiration Time</label>
+                <select asp-for="expiresIn" class="form-control form-select custom-input">
+                    <option value="0.5">30 minutes</option>
+                    <option value="1">1 hour</option>
+                    <option value="12">12 hours</option>
+                    <option selected value="24">1 day</option>
+                    <option value="168">1 week</option>
+                    <option value="720">30 days</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="content" class="control-label"></label>
+                <textarea asp-for="content" class="form-control content-text"></textarea>
+            </div>
+            <div class="form-group text-danger">
+                @Html.DisplayFor(model => model.validationError)
+            </div>            
+            <div class="form-group pt-2">
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts{
+    <environment include="Development">
+        <script src="~/js/create.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/create.min.js"></script>
+    </environment>
+}
