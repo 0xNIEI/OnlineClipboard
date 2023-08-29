@@ -15,6 +15,7 @@ namespace OnlineClipboard
             builder.Services.AddControllersWithViews();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddRazorPages();
+            builder.Logging.AddConsole();
             builder.Services.AddAntiforgery(options =>
             {
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;

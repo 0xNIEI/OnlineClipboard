@@ -16,7 +16,10 @@ namespace OnlineClipboard.Models
         [DisplayName("Only viewable once")]
         public bool onlyViewableOnce { get; set; }
         public string? validationError { get; set; }
+        [DisplayName("Expiration Time")]
         public double expiresIn { get; set; }
+        [DisplayName("Password (needed for creation)")]
+        public string? password { get; set; }
         public EntryViewModel(Entry entry)
         {
             id = entry.id;
@@ -30,7 +33,7 @@ namespace OnlineClipboard.Models
             content = "";
         }
 
-        public static string Base64Decode(string base64EncodedData)
+        private static string Base64Decode(string base64EncodedData)
         {
             var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);

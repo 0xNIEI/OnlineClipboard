@@ -19,7 +19,7 @@
                 </label>
             </div>
             <div class="form-group pb-2">
-                <label asp-for="expiresIn" class="control-label">Expiration Time</label>
+                <label asp-for="expiresIn" class="control-label"></label>
                 <select asp-for="expiresIn" class="form-control form-select custom-input">
                     <option value="0.5">30 minutes</option>
                     <option value="1">1 hour</option>
@@ -32,6 +32,10 @@
             <div class="form-group">
                 <label asp-for="content" class="control-label"></label>
                 <textarea asp-for="content" class="form-control content-text" maxlength="69000"></textarea>
+            </div>
+            <div class="form-group pb-2">
+                <label asp-for="password" class="control-label"></label>
+                <input asp-for="password" class="form-control custom-input" type="password" />
             </div>
             <div class="form-group text-danger">
                 @Html.DisplayFor(model => model.validationError)

@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Primitives;
 using OnlineClipboard.Data;
 using OnlineClipboard.Models;
 
@@ -10,11 +11,15 @@ namespace OnlineClipboard.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly Random _random;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger _logger;
 
-        public EntriesController(ApplicationDbContext context)
+        public EntriesController(ApplicationDbContext context, IConfiguration configuration, ILogger<EntriesController> logger)
         {
             _context = context;
             _random = new Random();
+            _configuration = configuration;
+            _logger = logger;
         }
 
         // GET: Entries
@@ -62,6 +67,10 @@ namespace OnlineClipboard.Controllers
                 await _context.SaveChangesAsync();
             }
 
+            var ipAddr = GetRequestIp(Request);
+
+            _logger.LogInformation($"{ipAddr} viewed {entryDbModel.id}");
+
             return View(new EntryViewModel(entryDbModel));
         }
 
@@ -78,6 +87,16 @@ namespace OnlineClipboard.Controllers
             if (string.IsNullOrWhiteSpace(entryViewModel.content) || entryViewModel.content.Length >= 69420)
             {
                 entryViewModel.validationError = "Content is empty or too large";
+                return View(entryViewModel);
+            }
+
+            var enteredPasswordHash = SHA512(entryViewModel.password ?? string.Empty);
+            var realPasswordHash = _configuration.GetValue<string>("Hashbrown");
+
+            if (string.IsNullOrWhiteSpace(entryViewModel.password) || enteredPasswordHash != realPasswordHash)
+            {
+                entryViewModel.password = string.Empty;
+                entryViewModel.validationError = "Password incorrect";
                 return View(entryViewModel);
             }
 
@@ -128,6 +147,10 @@ namespace OnlineClipboard.Controllers
                 entryDbModel.custom_id = entryViewModel.custom_id;
             }
 
+            var ipAddr = GetRequestIp(Request);
+
+            _logger.LogInformation($"{ipAddr} created {entryDbModel.id}");
+
             _context.Add(entryDbModel);
             await _context.SaveChangesAsync();
 
@@ -145,9 +168,14 @@ namespace OnlineClipboard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-                await _context.Entry.Where(x => x.id == id).ExecuteDeleteAsync();
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+            await _context.Entry.Where(x => x.id == id).ExecuteDeleteAsync();
+            await _context.SaveChangesAsync();
+
+            var ipAddr = GetRequestIp(Request);
+
+            _logger.LogInformation($"{ipAddr} deleted {id}");
+
+            return RedirectToAction(nameof(Index));
         }
 
         //private bool EntryExists(int id)
@@ -163,10 +191,34 @@ namespace OnlineClipboard.Controllers
             return regex.IsMatch(input) && !Regex.IsMatch(input, @"^\d+$");
         }
 
-        public static string Base64Encode(string plainText)
+        private static string Base64Encode(string plainText)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return System.Convert.ToBase64String(plainTextBytes);
+        }
+
+        private static string SHA512(string input)
+        {
+            var bytes = System.Text.Encoding.UTF8.GetBytes(input);
+            using (var hash = System.Security.Cryptography.SHA512.Create())
+            {
+                var hashedInputBytes = hash.ComputeHash(bytes);
+
+                // Convert to text
+                // StringBuilder Capacity is 128, because 512 bits / 8 bits in byte * 2 symbols for byte 
+                var hashedInputStringBuilder = new System.Text.StringBuilder(128);
+                foreach (var b in hashedInputBytes)
+                    hashedInputStringBuilder.Append(b.ToString("X2"));
+                return hashedInputStringBuilder.ToString();
+            }
+        }
+
+        private string GetRequestIp(HttpRequest request)
+        {
+            //Derived from https://developers.cloudflare.com/support/troubleshooting/restoring-visitor-ips/restoring-original-visitor-ips/
+            const string HeaderKeyName = "CF-Connecting-IP";
+            request.Headers.TryGetValue(HeaderKeyName, out StringValues headerValue);
+            return headerValue.ToString() == "" ? "Development" : headerValue.ToString();
         }
     }
 }
