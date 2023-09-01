@@ -18,8 +18,8 @@ namespace OnlineClipboard.Models
         public string? validationError { get; set; }
         [DisplayName("Expiration Time")]
         public double expiresIn { get; set; }
-        [DisplayName("Password (needed for creation)")]
-        public string? password { get; set; }
+        [DisplayName("BroToken™")]
+        public string? broToken { get; set; }
         public EntryViewModel(Entry entry)
         {
             id = entry.id;

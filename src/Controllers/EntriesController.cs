@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Net;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
@@ -84,19 +85,19 @@ namespace OnlineClipboard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(EntryViewModel entryViewModel)
         {
-            if (string.IsNullOrWhiteSpace(entryViewModel.content) || entryViewModel.content.Length >= 69420)
+            if (string.IsNullOrWhiteSpace(entryViewModel.content) || entryViewModel.content.Length >= 100000)
             {
                 entryViewModel.validationError = "Content is empty or too large";
                 return View(entryViewModel);
             }
 
-            var enteredPasswordHash = SHA512(entryViewModel.password ?? string.Empty);
+            var enteredPasswordHash = SHA512(entryViewModel.broToken ?? string.Empty);
             var realPasswordHash = _configuration.GetValue<string>("Hashbrown");
 
-            if (string.IsNullOrWhiteSpace(entryViewModel.password) || enteredPasswordHash != realPasswordHash)
+            if (string.IsNullOrWhiteSpace(entryViewModel.broToken) || enteredPasswordHash != realPasswordHash)
             {
-                entryViewModel.password = string.Empty;
-                entryViewModel.validationError = "Password incorrect";
+                entryViewModel.broToken = string.Empty;
+                entryViewModel.validationError = "BroToken™ invalid";
                 return View(entryViewModel);
             }
 
@@ -137,7 +138,7 @@ namespace OnlineClipboard.Controllers
                 var customIdIsValid = ContainsLetterAndNotJustNumbers(entryViewModel.custom_id) && regex.IsMatch(entryViewModel.custom_id);
                 var customIdAlreadyExists = await _context.Entry.AnyAsync(x => x.custom_id == entryViewModel.custom_id);
                 var customIdLengthIsValid = entryViewModel.custom_id.Length >= 1 && entryViewModel.custom_id.Length <= 16;
-                var customIdContainsBadStuff = entryViewModel.custom_id.Contains('/') || entryViewModel.custom_id.Contains("Home") || entryViewModel.custom_id.Contains("Entries");
+                var customIdContainsBadStuff = entryViewModel.custom_id.Contains('/') || entryViewModel.custom_id.Contains("home") || entryViewModel.custom_id.Contains("entries") || entryViewModel.custom_id.Contains("changetheme");
 
                 if (!customIdIsValid || customIdAlreadyExists || !customIdLengthIsValid || customIdContainsBadStuff)
                 {
@@ -217,6 +218,13 @@ namespace OnlineClipboard.Controllers
         {
             //Derived from https://developers.cloudflare.com/support/troubleshooting/restoring-visitor-ips/restoring-original-visitor-ips/
             const string HeaderKeyName = "CF-Connecting-IP";
+            request.Headers.TryGetValue(HeaderKeyName, out StringValues headerValue);
+            return headerValue.ToString() == "" ? "Development" : headerValue.ToString();
+        }
+
+        private string GetRequestCountry(HttpRequest request)
+        {
+            const string HeaderKeyName = "CF-IPCountry";
             request.Headers.TryGetValue(HeaderKeyName, out StringValues headerValue);
             return headerValue.ToString() == "" ? "Development" : headerValue.ToString();
         }

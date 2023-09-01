@@ -33,10 +33,15 @@ namespace OnlineClipboard.Controllers
                     return Ok();
                 }
                 HttpContext.Response.Cookies.Delete("__Secure-DarkMode");
-                CookieOptions options = new CookieOptions();
-                options.Expires = DateTime.Now.AddMonths(12);
-                options.IsEssential = true;
-                options.Path = "/";
+                var options = new CookieOptions
+                {
+                    Expires = DateTime.Now.AddMonths(12),
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    IsEssential = true,
+                    Path = "/",
+                    HttpOnly = true
+                };
                 HttpContext.Response.Cookies.Append("__Secure-DarkMode", "false", options);
             }
             else
