@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
 using OnlineClipboard.Data;
+using System.Text;
 
 namespace OnlineClipboard
 {
@@ -83,14 +83,6 @@ namespace OnlineClipboard
 
             app.Use(async (context, next) =>
             {
-                const string HeaderKeyName = "CF-IPCountry";
-                context.Request.Headers.TryGetValue(HeaderKeyName, out StringValues headerValue);
-                var country = headerValue.ToString() == "" ? "Development" : headerValue.ToString();
-                if (country != "CH" && country != "Development")
-                {
-                    return;
-                }
-
                 if (!context.Response.Headers.Any(x => x.Key == "Content-Security-Policy"))
                 {
                     context.Response.Headers.Add("Content-Security-Policy", "default-src 'none'; font-src 'self'; img-src data: w3.org/svg/2000 'self'; object-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none';");
@@ -98,6 +90,18 @@ namespace OnlineClipboard
                     context.Response.Headers.Add("X-Frame-Options", "DENY");
                     context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
                     context.Response.Headers.Add("Referrer-Policy", "strict-origin-when-cross-origin");
+                }
+
+                const string HeaderKeyName = "CF-IPCountry";
+                context.Request.Headers.TryGetValue(HeaderKeyName, out StringValues headerValue);
+                var country = headerValue.ToString() == "" ? "Development" : headerValue.ToString();
+                if (country != "CH" && country != "Development")
+                {
+                    context.Response.StatusCode = 451;
+                    var bytes = Encoding.UTF8.GetBytes("HTTP 451 | Unavailable For Legal Reasons");
+
+                    await context.Response.Body.WriteAsync(bytes, 0, bytes.Length);
+                    return;
                 }
 
                 await next();
