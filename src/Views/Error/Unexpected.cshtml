@@ -1,8 +1,29 @@
+@model ErrorViewModel
 @{
-    var title = "Error";
-    ViewData["Title"] = title;
+    ViewData["Title"] = "Error";
 }
 
 <div class="text-center">
-    <h1>500 - Unexpected</h1>
+    <h1 class="title">500 - Internal Server Error</h1>
+    <h2>An unexpected error occurred on the server. Please try again later or contact support if the issue persists.</h2>
+    @if (Model.IsDevelopmentEnvironment)
+    {
+        <div class="error-details">
+            <ul>
+                <li>From Exception: @(Model.FromException ? Html.Raw("<i class=\"fa-solid fa-square-check\"></i>") : Html.Raw("<i class=\"fa-solid fa-square-xmark\"></i>"))</li>
+                @if (Model.RequestId != null)
+                {
+                    <li>Request ID: @Model.RequestId</li>
+                }
+                @if (Model.Path != null)
+                {
+                    <li>Path: @Model.Path</li>
+                }
+                @if (Model.Exception != null)
+                {
+                    <li>Exception: @Model.Exception.Message</li>
+                }
+            </ul>
+        </div>
+    }
 </div>

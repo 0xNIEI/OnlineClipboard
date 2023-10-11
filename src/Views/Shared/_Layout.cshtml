@@ -29,13 +29,11 @@
     <meta name="twitter:image" content="https://c2.niei.net/img/default-cover.png">
     <title>@ViewData["Title"] - OnlineClipboard</title>
     <environment include="Development">
-        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/fortawesome/fontawesome-free/css/all.css" />
+        <link rel="stylesheet" href="https://niei.net/css/phoenix.css" asp-append-version="true" />
     </environment>
 
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/fortawesome/fontawesome-free/css/all.min.css" />
+        <link rel="stylesheet" href="https://niei.net/css/phoenix.min.css" asp-append-version="true" />
     </environment>
     @await RenderSectionAsync("Styles", required: false)
 </head>
@@ -46,13 +44,13 @@
                 <a class="navbar-brand" href="/">
                     <img src="~/img/logo.svg" alt="NIEI" width="35" height="35" draggable="false">
                 </a>
-            </div>
-            <div class="text-right px-2 theme-nav-item">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <button class="btn btn-outline-primary" id="btnSwitch">@Html.Raw(color_mode_icon)</button>
-                    </li>
-                </ul>
+                <div class="text-right">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <button class="btn btn-outline-primary" id="btnSwitch">@Html.Raw(color_mode_icon)</button>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
@@ -68,11 +66,11 @@
         </div>
     </footer>
     <environment include="Development">
-        <script src="~/lib/bootstrap/js/bootstrap.bundle.js"></script>
+        <script src="https://niei.net/lib/bootstrap/js/bootstrap.bundle.js"></script>
         <script src="~/js/site.js" defer></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="https://niei.net/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="~/js/site.min.js" defer></script>
     </environment>
     @await RenderSectionAsync("Scripts", required: false)
