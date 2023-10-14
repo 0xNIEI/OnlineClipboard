@@ -1,4 +1,9 @@
-﻿document.getElementById('btnSwitch').addEventListener('click', () => {
+﻿document.addEventListener("DOMContentLoaded", function () {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+});
+
+document.getElementById('btnSwitch').addEventListener('click', () => {
     if (document.documentElement.getAttribute('data-bs-theme') == 'dark') {
         document.getElementById("btnSwitch").innerHTML = '<i class="fa-solid fa-sun"></i>';
         document.documentElement.setAttribute('data-bs-theme', 'light');

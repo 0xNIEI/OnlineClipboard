@@ -14,9 +14,9 @@
 </div>
 <div>
     <form asp-action="Delete" asp-route-id="@Model.id">
-        <button type="submit" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
-        <a asp-action="Create" class="btn btn-outline-primary"><i class="fa-solid fa-plus"></i></a>
-        <button class="btn btn-outline-primary" id="copy-button" type="button"><i class="fa-solid fa-clipboard"></i></button>
+        <button type="submit" class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Delete Entry"><i class="fa-solid fa-trash"></i></button>
+        <a asp-action="Create" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Create New Entry"><i class="fa-solid fa-plus"></i></a>
+        <button class="btn btn-outline-primary" id="copy-button" type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Copy Entry Content"><i class="fa-solid fa-clipboard"></i></button>
     </form>
 </div>
 @section Scripts{
