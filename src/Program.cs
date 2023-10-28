@@ -70,7 +70,7 @@ namespace OnlineClipboard
             app.MapControllerRoute(
                 name: "changeTheme",
                 pattern: "changeTheme",
-                defaults: new { controller = "Home", action = "ChangeTheme" });
+                defaults: new { controller = "Application", action = "ChangeTheme" });
 
             app.MapControllerRoute(
                 name: "customRoute",

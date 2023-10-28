@@ -4,11 +4,11 @@ using System.Diagnostics;
 
 namespace OnlineClipboard.Controllers
 {
-    public class HomeController : Controller
+    public class ApplicationController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<ApplicationController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public ApplicationController(ILogger<ApplicationController> logger)
         {
             _logger = logger;
         }

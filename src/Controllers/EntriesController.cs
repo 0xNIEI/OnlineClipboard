@@ -136,7 +136,15 @@ namespace OnlineClipboard.Controllers
                 var regex = new Regex(pattern, RegexOptions.IgnoreCase);
 
                 var customIdIsValid = ContainsLetterAndNotJustNumbers(entryViewModel.custom_id) && regex.IsMatch(entryViewModel.custom_id);
-                var customIdAlreadyExists = await _context.Entry.AnyAsync(x => x.custom_id == entryViewModel.custom_id);
+                
+                var customIdAlreadyExists = await _context.Entry.AnyAsync(x => x.custom_id == entryViewModel.custom_id && x.expires_at > DateTime.UtcNow);
+
+                if (!customIdAlreadyExists)
+                {
+                    //Delete expired entries here also
+                    await _context.Entry.Where(x => x.custom_id == entryViewModel.custom_id).ExecuteDeleteAsync();
+                }
+
                 var customIdLengthIsValid = entryViewModel.custom_id.Length >= 1 && entryViewModel.custom_id.Length <= 16;
                 var customIdContainsBadStuff = entryViewModel.custom_id.Contains('/') || entryViewModel.custom_id.Contains("home") || entryViewModel.custom_id.Contains("entries") || entryViewModel.custom_id.Contains("changetheme");
 
