@@ -83,14 +83,15 @@ namespace OnlineClipboard
 
             app.Use(async (context, next) =>
             {
-                if (!context.Response.Headers.Any(x => x.Key == "Content-Security-Policy"))
-                {
-                    context.Response.Headers.Add("Content-Security-Policy", "default-src 'none'; font-src 'self' https://niei.net; img-src data: w3.org/svg/2000 'self'; object-src 'none'; script-src 'self' https://niei.net; style-src 'self' https://niei.net; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none';");
-                    context.Response.Headers.Add("X-Xss-Protection", "1; mode=block");
-                    context.Response.Headers.Add("X-Frame-Options", "DENY");
-                    context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
-                    context.Response.Headers.Add("Referrer-Policy", "strict-origin-when-cross-origin");
-                }
+                context.Response.Headers.Append("Content-Security-Policy", "default-src 'none'; font-src 'self' https://niei.net; img-src data: w3.org/svg/2000 'self'; object-src 'none'; script-src 'self' https://niei.net; style-src 'self' https://niei.net; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none';");
+                context.Response.Headers.Append("X-Xss-Protection", "1; mode=block");
+                context.Response.Headers.Append("X-Frame-Options", "DENY");
+                context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+                context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+                context.Response.Headers.Append("Permissions-Policy", "accelerometer=(), autoplay=(), display-capture=(), camera=(), geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()");
+                context.Response.Headers.Append("Cross-Origin-Embedder-Policy", "(require-corp); report-to=\"default\"");
+                context.Response.Headers.Append("Cross-Origin-Opener-Policy", "(same-origin); report-to=\"default\"");
+                context.Response.Headers.Append("Cross-Origin-Resource-Policy", "(same-site)");
 
                 const string HeaderKeyName = "CF-IPCountry";
                 context.Request.Headers.TryGetValue(HeaderKeyName, out StringValues headerValue);
