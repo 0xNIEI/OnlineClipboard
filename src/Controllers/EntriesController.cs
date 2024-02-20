@@ -72,7 +72,16 @@ namespace OnlineClipboard.Controllers
 
             _logger.LogInformation($"{ipAddr} viewed {entryDbModel.id}");
 
-            return View(new EntryViewModel(entryDbModel));
+            var vm = new EntryViewModel(entryDbModel);
+
+            var userAgent = HttpContext.Request.Headers["User-Agent"].ToString();
+
+            if (userAgent.Contains("curl") || userAgent.Contains("Wget") || userAgent.Contains("libwww"))
+            {
+                return Ok(vm.content);
+            }
+
+            return View(vm);
         }
 
         // GET: Entries/Create

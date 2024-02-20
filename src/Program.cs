@@ -88,7 +88,7 @@ namespace OnlineClipboard
                 context.Response.Headers.Append("X-Frame-Options", "DENY");
                 context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
                 context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
-                context.Response.Headers.Append("Permissions-Policy", "accelerometer=(), autoplay=(), display-capture=(), camera=(), geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()");
+                context.Response.Headers.Append("Permissions-Policy", "accelerometer=(), autoplay=(), display-capture=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()");
                 context.Response.Headers.Append("Cross-Origin-Embedder-Policy", "(require-corp); report-to=\"default\"");
                 context.Response.Headers.Append("Cross-Origin-Opener-Policy", "(same-origin); report-to=\"default\"");
                 context.Response.Headers.Append("Cross-Origin-Resource-Policy", "(same-site)");
