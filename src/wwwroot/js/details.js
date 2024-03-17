@@ -1,3 +1,6 @@
+document.addEventListener("DOMContentLoaded", function () {
+    hljs.highlightAll();
+});
 document.getElementById("copy-button").addEventListener("click", function () {
     navigator.clipboard.writeText(document.getElementById("content-block").innerText);
     var originalInnerHtml = this.innerHTML;

@@ -4,11 +4,20 @@
     ViewData["Title"] = Html.DisplayFor(model => model.id);
 }
 
-<h1 class="title">@Html.DisplayFor(model => model.id)@(Model.custom_id != null ? " (" + Model.custom_id + ")" : "")</h1>
+@section Styles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/highlight.js/styles/github-dark.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/lib/highlight.js/styles/github-dark.min.css" />
+    </environment>
+}
+
+<h1 class="title">@Html.DisplayFor(model => model.id)@(Model.custom_id != null ? " [" + Model.custom_id + "]" : "")</h1>
 
 <div>
 <div class="pb-2 pt-2 border-secondary border-2">
-    <pre class="content" id="content-block">@Html.DisplayFor(model => model.content)</pre>
+        <pre class="content" id="content-block"><code>@Html.DisplayFor(model => model.content)</code></pre>
 </div>
     
 </div>
@@ -20,6 +29,7 @@
     </form>
 </div>
 @section Scripts{
+    <script src="~/lib/highlight.js/highlight.min.js"></script>
     <environment include="Development">
         <script src="~/js/details.js"></script>
     </environment>
